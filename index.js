@@ -7,7 +7,7 @@ const ProjectModule = (function() {
                 isBusy: false,
             
                 init(participants, pricing) {
-                    if (Array.isArray(participants)) {
+                    if (Array.isArray(participants) && participants.every((item) => item.hasOwnProperty('seniorityLevel'))) {
                         this.participants = participants;
                     }
                     if (typeof pricing === 'object') {
@@ -66,7 +66,6 @@ const ProjectModule = (function() {
                     // if (this.isBusy) {
                     //     return false;
                     // } 
-                    this.isBusy = true;
                     setTimeout(() => {
                         const index = this.participants.findIndex((item) => item === participantObject);
                         const removinObj = index != -1 ? this.participants.splice(index, 1)[0] : null;      
@@ -75,13 +74,13 @@ const ProjectModule = (function() {
                             callbackFunction(removinObj);
                         }
                     });
+                    this.isBusy = true;
                 },
             
                 setPricing(participantPriceObject, callbackFunction) {
                     // if (this.isBusy) {
                     //     return false;
                     // } 
-                    this.isBusy = true; 
                     setTimeout(() => {
                         this.isBusy = false;  
                         let isPricing = false;
@@ -99,6 +98,7 @@ const ProjectModule = (function() {
                             callbackFunction();
                         }
                     }); 
+                    this.isBusy = true; 
                  },
             
                 calculateSalary(periodInDays) {
